@@ -18,16 +18,21 @@ function createLoginTable()
 
 /* Add a new login entry. Will replace any existing entry for the same
    user - you can only be logged in from one place at once.
+
+   Returns a randomly generated key, which must be passed to future
+   calls to checkLogin().
  */
-function addLogin($userid, $key)
+function addLogin($userid)
 {
   $userid = mysql_real_escape_string($userid);
-  $key = mysql_real_escape_string($key);
 
+  $key = generateRandomID();
   $pass = createHash($userid . $key, SITE_LOGIN_KEY);
 
   db_run("REPLACE INTO ".TBL_LOGINS.
          "(userid,passkey,login_date) VALUES('$userid', '$pass', NOW())");
+
+  return $key;
 }
 
 /* Check login entry. Returns true on match, false otherwise.

@@ -1,18 +1,19 @@
 <?php
 require '../modules/db_login.php';
 
-function chk()
+function chk($pass)
 {
   echo 'Checking login: ';
-  if(checkLogin("user", "pass")) echo "PASSED<br>";
+  if(checkLogin("user", $pass)) echo "PASSED<br>";
   else echo "FAILED<br>";
 }
 
-chk();
+chk("whatever");
 echo 'Logging in<br>';
-addLogin("user", "pass");
-chk();
+$pass = addLogin("user");
+chk($pass);
 echo 'Logging out<br>';
 removeLogin("user");
-chk();
+chk($pass);
+echo "pass=$pass";
 ?>
