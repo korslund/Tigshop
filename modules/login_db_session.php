@@ -19,7 +19,7 @@ function internal_isLoggedIn(&$userid)
       $passkey = $info['key'];
 
       // Check against the database
-      if(checkLogin($userid, $passkey))
+      if(db_checkLogin($userid, $passkey))
         {
           // Approved.
           $userid = $userid;
@@ -42,7 +42,7 @@ function internal_isLoggedIn(&$userid)
 function doLogin($userid, $keep)
 {
   // Insert into the database, and get a generated key
-  $pass = addLogin($userid);
+  $pass = db_addLogin($userid);
 
   // Bake a cookie
   set_login_info($userid, $pass, $keep);
@@ -55,7 +55,7 @@ function doLogin($userid, $keep)
 function doLogout($userid)
 {
   // Kill database entry
-  removeLogin($userid);
+  db_removeLogin($userid);
 
   // Killing session/cookie info isn't strictly necessary (with the DB
   // entry gone, the info becomes useless), but do it anyway.

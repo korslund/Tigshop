@@ -4,16 +4,16 @@ require '../modules/db_login.php';
 function chk($pass)
 {
   echo 'Checking login: ';
-  if(checkLogin("user", $pass)) echo "PASSED<br>";
+  if(db_checkLogin("user", $pass)) echo "PASSED<br>";
   else echo "FAILED<br>";
 }
 
 chk("whatever");
 echo 'Logging in<br>';
-$pass = addLogin("user");
+$pass = db_addLogin("user");
 chk($pass);
 echo 'Logging out<br>';
-removeLogin("user");
+db_removeLogin("user");
 chk($pass);
 echo "pass=$pass";
 ?>

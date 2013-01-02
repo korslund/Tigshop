@@ -6,7 +6,7 @@ define("TBL_LOGINS", "tigshop_logins");
 
 /* Set up the database table. Not called during normal operation.
  */
-function createLoginTable()
+function db_createLoginTable()
 {
   db_run("DROP TABLE IF EXISTS " . TBL_LOGINS);
 
@@ -20,11 +20,11 @@ function createLoginTable()
    user - you can only be logged in from one place at once.
 
    Returns a randomly generated key, which must be passed to future
-   calls to checkLogin().
+   calls to db_checkLogin().
  */
-function addLogin($userid)
+function db_addLogin($userid)
 {
-  $userid = mysql_real_escape_string($userid);
+  $userid = db_esc($userid);
 
   $key = generateRandomID();
   $pass = createHash($userid . $key, SITE_LOGIN_KEY);
@@ -39,13 +39,12 @@ function addLogin($userid)
 
    TODO: Might add an optional expiry time later.
  */
-function checkLogin($userid, $key)
+function db_checkLogin($userid, $key)
 {
-  $userid = mysql_real_escape_string($userid);
-  $key = mysql_real_escape_string($key);
+  $userid = db_esc($userid);
+  $key = db_esc($key);
 
-  $res = db_run("SELECT userid,passkey,login_date FROM ".TBL_LOGINS." WHERE userid='$userid'");
-  $row = mysql_fetch_array($res);
+  $row = db_run_array("SELECT userid,passkey FROM ".TBL_LOGINS." WHERE userid='$userid'");
 
   $pass = $row['passkey'];
 
@@ -55,9 +54,9 @@ function checkLogin($userid, $key)
 
 /* Remove login entry for the given userid.
  */
-function removeLogin($userid)
+function db_removeLogin($userid)
 {
-  $userid = mysql_real_escape_string($userid);
+  $userid = db_esc($userid);
   db_run("DELETE FROM ".TBL_LOGINS." WHERE userid='$userid'");
 }
 ?>
