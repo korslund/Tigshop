@@ -52,12 +52,12 @@ function get_login_info()
  */
 function clear_login_info()
 {
-  // Delete cookies
-  setcookie("userid", "", time() - 60*60*24*100);
-  setcookie("key",    "", time() - 60*60*24*100);
-
   // Kill the session data
   session_destroy();
+
+  // Delete cookies
+  setcookie("userid", "", time() - 3600);
+  setcookie("key",    "", time() - 3600);
 }
 
 /* Set current login info. This essentially "logs us in", and stores

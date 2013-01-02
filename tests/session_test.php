@@ -1,6 +1,5 @@
 <?php
-
-require 'modules/session_login.php';
+require '../modules/session_login.php';
 
 $val = get_login_info();
 
@@ -12,7 +11,7 @@ if(isset($_GET['logout']))
   }
 elseif(isset($_GET['login']))
   {
-    set_login_info("abc", "123", true);
+    set_login_info("abcd", "1234", true);
     header('Location: session_test.php');
     exit;
   }

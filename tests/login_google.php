@@ -1,6 +1,6 @@
 <?php
 
-require 'modules/login_functions.php';
+require '../modules/login_functions.php';
 
 $ret = login_google("http://nkorslund.com");
 
