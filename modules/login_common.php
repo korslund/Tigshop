@@ -4,10 +4,19 @@ require 'auto_login.php';
 require 'auth_code.php';
 require 'db_auth.php';
 
+function createUserFromAuth($auth)
+{
+  require_once 'db_user.php';
+
+  $id = db_addUser();
+  db_addAuthEntry($auth,$id);
+  return $id;
+}
+
 /* Sign in using an auth string. See description of login_email() for
    more details.
  */
-function _login_auth($auth, $keep)
+function login_auth($auth, $keep)
 {
   global $g_loggedIn;
 
@@ -48,7 +57,7 @@ function login_email($email, $keep)
     return array("status" => "error",
                  "error" => "Missing or invalid email");
 
-  // Encode the auth string and let _login_auth() handle it.
-  return _login_auth(auth_encode_email($email));
+  // Encode the auth string and let login_auth() handle it.
+  return login_auth(auth_encode_email($email), $keep);
 }
 ?>

@@ -10,20 +10,53 @@ function frontend_handle_login($ret)
   require_once 'frontend_urls.php';
 
   $stat = $ret['status'];
+  $auth = $ret['auth'];
+  $_SESSION['last_auth'] = $auth;
 
   /* TODO: All of these cases will be expanded with addition
-     functionality later. In cases where info from $ret needs to be
-     passed on to other pages, use session variables.
+     functionality and error handling later.
+
+     For example, we might want to redirect all users to a given page
+     (approve these new settings, or whatever) before redirecting them
+     to their real destination. We've stipulated where to put such a
+     call below under the name redirect_user_landing(). This function
+     would default to just calling redirect_session() if no special
+     page is necessary.
    */
 
   if($stat == "ok") redirect_session();
   elseif($stat == "already")
     {
-      echo "You are already logged in!";
+      /* 'new_auth' is set if the user tried reauthenticating in while
+         already logged in. This may or may not provide us a new
+         authentication ID to add to the account - remember it so we
+         may warn the user about it.
+      */
+      $_SESSION['new_auth'] = $auth;
+      //redirect_user_landing();
+      redirect_session();
     }
   elseif($stat == "nouser")
     {
-      echo "No user found. User creation is not implemented yet";
+      // No user was found matching this ID. So create one.
+      require_once 'login_common.php';
+      $id = createUserFromAuth($auth);
+
+      // Log in as the new user
+      $ret2 = login_auth($auth, $ret['keep']);
+      if($ret2['status'] == "ok" && $ret2['userid'] == $id)
+        {
+          /* 'new_user' is set if a new user was created. This can be
+             used by other pages to inform the new users about
+             important stuff.
+          */
+          $_SESSION['new_user'] = true;
+          //redirect_user_landing();
+          redirect_session();
+        }
+
+      echo "Error: failed to log in as new user. Details:<br>id=$id<br>";
+      print_r($ret2);
     }
   elseif($stat == "error")
     {

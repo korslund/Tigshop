@@ -42,7 +42,7 @@ function redirect_set_session($key)
 function redirect_session()
 {
   $key = $_SESSION['redir_key'];
-  $_SESSION['redir_key'] = "";
+  unset($_SESSION['redir_key']);
   redirect_keyword($key);
 }
 ?>
