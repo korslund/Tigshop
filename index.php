@@ -1,12 +1,9 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
-<meta http-equiv="content-type" content="text/html; charset=utf-8">
-<title>The Indie Game Shop - tigshop.com</title>
-<!--link rel="stylesheet" type="text/css" href="/css/main.css"-->
-<!--link rel="shortcut icon" href="/tiggit.ico"-->
-</head>
-<body>
+<?php
+require 'modules/frontend_header.php';
+require 'modules/frontend_autologin.php';
+html_header("The Indie Game Shop");
+html_user_bar();
+?>
 <p>Hello there!</p>
 <p>Tigshop is an experimental new game shop, portal, thingie. We are
 currently very hush-hush secretive and sneaky.</p>
@@ -15,6 +12,6 @@ currently very hush-hush secretive and sneaky.</p>
 <form action="invite.php" method="post">
 Email: <input name="email" type="text"/> <input value="Send" type="submit"/>
 </form>
-<p><a href="login/">Login</a></p>
-</body>
-</html>
+<?php
+html_footer();
+?>

@@ -1,5 +1,5 @@
 <?php
-require_once 'secret/config.php';
+require 'module/frontend_urls.php';
 
 function append_line($file, $line)
 {
@@ -12,5 +12,5 @@ $email = $_POST['email'];
 
 append_line(INVITE_FILE, $email);
 
-header("Location: index.html");
+redirect_home();
 ?>

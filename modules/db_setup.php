@@ -1,5 +1,7 @@
 <?php
-require_once '../secret/config.php';
+// This because PHP is fundamentally stupid
+include_once 'secret/config.php';
+include_once '../secret/config.php';
 
 class MySQL_Setup
 {
