@@ -63,6 +63,9 @@ function doLogout($userid)
   clear_login_info();
 }
 
+// Make sure we aren't running from a www. domain (it messes up cookies)
+removeWWW();
+
 // Global data.
 $g_userid = "";
 $g_loggedIn = internal_isLoggedIn($g_userid);

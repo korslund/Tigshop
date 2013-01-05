@@ -1,4 +1,34 @@
 <?php
+
+/* Redirect away from www. if necessary. This makes it easier to
+   manage cookies. Piled together from various stackoverflow answers.
+ */
+function removeWWW()
+{
+  $host = $_SERVER['HTTP_HOST'];
+  if(substr($host, 0, 4) == 'www.')
+    {
+      // Construct a new URL without the www.
+
+      // Start with http:// or https://
+      $newURL = 'http'.(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on' ? 's':'').'://';
+
+      // Add host name, with 'www.' removed
+      $newURL .= substr($_SERVER['HTTP_HOST'], 4);
+
+      // Preserve non-standard ports as well
+      $port = $_SERVER['SERVER_PORT'];
+      if($port != "80")
+        $newURL .= ':'.$port;
+
+      // Finally add the URI
+      $newURL .= $_SERVER['REQUEST_URI'];
+
+      // Redirect
+      header("Location: $newURL");
+    }
+}
+
 /* Check whether a user currently has login data, either through
    cookies or session variables. Should only be called once at the
    beginning of the script.
