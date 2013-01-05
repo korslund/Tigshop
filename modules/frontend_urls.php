@@ -1,6 +1,5 @@
 <?php
-include_once 'secret/config.php';
-include_once '../secret/config.php';
+require_once 'config.php';
 
 function _redirect($where)
 {
@@ -34,15 +33,15 @@ function redirect_keyword($key)
  */
 function redirect_set_session($key)
 {
-  $_SESSION['redir_key'] = $key;
+  $_SESSION['tigshop_redir_key'] = $key;
 }
 
 /* Redirect to the value previously set in _SESSION
  */
 function redirect_session()
 {
-  $key = $_SESSION['redir_key'];
-  unset($_SESSION['redir_key']);
+  $key = $_SESSION['tigshop_redir_key'];
+  unset($_SESSION['tigshop_redir_key']);
   redirect_keyword($key);
 }
 ?>

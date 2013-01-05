@@ -16,19 +16,21 @@ function get_login_info()
   $ret['logged_in'] = false;
 
   // Check for session information
-  if(!isset($_SESSION['userid']) || !isset($_SESSION['key']))
+  if(!isset($_SESSION['tigshop_userid']) || !isset($_SESSION['tigshop_key']))
     {
       // No session. Maybe there are some tasty cookies for us?
-      if(isset($_COOKIE['userid']) && isset($_COOKIE['key']))
+      if(isset($_COOKIE['tigshop_userid']) && isset($_COOKIE['tigshop_key']))
         {
           // Yes. Copy it to the current session.
-          $_SESSION['userid'] = $_COOKIE['userid'];
-          $_SESSION['key']    = $_COOKIE['key'];
+          $_SESSION['tigshop_userid'] = $_COOKIE['tigshop_userid'];
+          $_SESSION['tigshop_key']    = $_COOKIE['tigshop_key'];
           $ret['source'] = 'cookie';
         }
       else
-        // No login info found.
-        return $ret;
+        {
+          // No login info found.
+          return $ret;
+        }
     }
   else
     {
@@ -36,10 +38,11 @@ function get_login_info()
     }
 
   // Return session data
-  assert(isset($_SESSION['userid']) && isset($_SESSION['key']));
+  assert(isset($_SESSION['tigshop_userid']) && isset($_SESSION['tigshop_key']));
   $ret['logged_in'] = true;
-  $ret['userid'] = $_SESSION['userid'];
-  $ret['key']    = $_SESSION['key'];
+  $ret['userid'] = $_SESSION['tigshop_userid'];
+  $ret['key']    = $_SESSION['tigshop_key'];
+
   return $ret;
 }
 
@@ -56,8 +59,8 @@ function clear_login_info()
   session_destroy();
 
   // Delete cookies
-  setcookie("userid", "", time() - 3600);
-  setcookie("key",    "", time() - 3600);
+  setcookie("tigshop_userid", "", time() - 3600, "/");
+  setcookie("tigshop_key",    "", time() - 3600, "/");
 }
 
 /* Set current login info. This essentially "logs us in", and stores
@@ -75,13 +78,13 @@ function set_login_info($userid, $key, $keep, $expire = 8640000)
   session_start();
 
   // Set up the session to be 'logged in' from this point on.
-  $_SESSION['userid'] = $userid;
-  $_SESSION['key'] = $key;
+  $_SESSION['tigshop_userid'] = $userid;
+  $_SESSION['tigshop_key'] = $key;
 
   if($keep)
     {
-      setcookie("userid", $userid, time() + $expire);
-      setcookie("key",    $key,    time() + $expire);
+      setcookie("tigshop_userid", $userid, time() + $expire, "/");
+      setcookie("tigshop_key",    $key,    time() + $expire, "/");
     }
 }
 ?>

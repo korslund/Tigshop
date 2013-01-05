@@ -25,7 +25,7 @@ function frontend_handle_login($ret)
 
   if($stat == "ok")
     {
-      $_SESSION['cur_auth'] = $auth;
+      $_SESSION['tigshop_cur_auth'] = $auth;
       redirect_session();
     }
   elseif($stat == "already")
@@ -35,7 +35,7 @@ function frontend_handle_login($ret)
          authentication ID to add to the account - remember it so we
          may warn the user about it.
       */
-      $_SESSION['new_auth'] = $auth;
+      $_SESSION['tigshop_new_auth'] = $auth;
       //redirect_user_landing();
       redirect_session();
     }
@@ -53,8 +53,8 @@ function frontend_handle_login($ret)
              used by other pages to inform the new users about
              important stuff.
           */
-          $_SESSION['new_user'] = true;
-          $_SESSION['cur_auth'] = $auth;
+          $_SESSION['tigshop_new_user'] = true;
+          $_SESSION['tigshop_cur_auth'] = $auth;
           //redirect_user_landing();
           redirect_session();
         }

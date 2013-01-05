@@ -13,6 +13,7 @@ function internal_isLoggedIn(&$userid)
 
   // Get session and cookie data, if any
   $info = get_login_info();
+
   if($info['logged_in'])
     {
       $userid = $info['userid'];

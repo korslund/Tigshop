@@ -10,7 +10,7 @@ $g_user_info = array();
 
 if($g_loggedIn)
   {
-    require 'db_user.php';
+    require_once 'db_user.php';
 
     // Disable logged-in status, reenable it below.
     $g_loggedIn = false;
