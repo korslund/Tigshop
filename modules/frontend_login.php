@@ -11,7 +11,6 @@ function frontend_handle_login($ret)
 
   $stat = $ret['status'];
   $auth = $ret['auth'];
-  $_SESSION['last_auth'] = $auth;
 
   /* TODO: All of these cases will be expanded with addition
      functionality and error handling later.
@@ -24,7 +23,11 @@ function frontend_handle_login($ret)
      page is necessary.
    */
 
-  if($stat == "ok") redirect_session();
+  if($stat == "ok")
+    {
+      $_SESSION['cur_auth'] = $auth;
+      redirect_session();
+    }
   elseif($stat == "already")
     {
       /* 'new_auth' is set if the user tried reauthenticating in while
@@ -51,6 +54,7 @@ function frontend_handle_login($ret)
              important stuff.
           */
           $_SESSION['new_user'] = true;
+          $_SESSION['cur_auth'] = $auth;
           //redirect_user_landing();
           redirect_session();
         }

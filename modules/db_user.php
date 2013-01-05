@@ -28,6 +28,15 @@ function db_addUser($nickname = "")
   return db_getId();
 }
 
+/* Update user info
+ */
+function db_setUserInfo($userid, $nick)
+{
+  $userid = db_esc($userid);
+  $nick = db_esc($nick);
+  db_run("UPDATE ".TBL_USERS." SET nickname='$nick' WHERE userid='$userid'");
+}
+
 /* Get user info. Returns an associative array, or 'false' if no such
    user was found.
  */

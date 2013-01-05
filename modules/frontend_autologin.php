@@ -1,9 +1,11 @@
 <?php
 require 'auto_login.php';
 
+$g_cur_auth = htmlentities($_SESSION['cur_auth']);
+
 function html_user_bar()
 {
-  global $g_loggedIn, $g_userid, $g_user_info;
+  global $g_loggedIn, $g_userid, $g_user_info, $g_cur_auth;
 
   require_once 'frontend_urls.php';
 
@@ -16,18 +18,17 @@ function html_user_bar()
       echo 'Logged in as <a href="'.url_userhome().'">'.$name.'</a> | ';
       echo '<a href="'.url_logout().'">Log out</a>';
 
-      $last_auth = $_SESSION['last_auth'];
       if(isset($_SESSION['new_auth']))
         {
           $new_auth = $_SESSION['new_auth'];
           unset($_SESSION['new_auth']);
 
-          if($new_auth != $last_auth)
+          if($new_auth != $g_cur_auth)
             {
               // Check if new_auth belongs to this user
               if(db_getUserFromAuth($new_auth) != $g_userid)
                 {
-                  echo "<p>Tried to log in as $new_auth but you are already logged as $last_auth! ";
+                  echo "<p>Tried to log in as $new_auth but you are already logged as ".disp_auth($g_cur_auth)."! ";
                   echo "Go to preferences (not implemented yet) to manage account settings.</p>";
                   $_SESSION['add_auth'] = $new_auth;
                 }
@@ -37,7 +38,7 @@ function html_user_bar()
       if(isset($_SESSION['new_user']) && $_SESSION['new_user'])
         {
           unset($_SESSION['new_user']);
-          echo "<p>New user created for ".$last_auth."!</p>";
+          echo "<p>New user created for ".disp_auth($g_cur_auth)."!</p>";
         }
       if($g_user_info['nickname'] == "")
         echo '<p>To set your nickname, go to <a href="'.url_userhome().'">account settings</a></p>';
