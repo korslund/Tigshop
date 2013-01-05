@@ -8,8 +8,9 @@ function html_user_bar()
   global $g_loggedIn, $g_userid, $g_user_info, $g_cur_auth;
 
   require_once 'frontend_urls.php';
+  require_once 'auth_code.php';
 
-  echo '<a href="'.url_home().'">TigShop</a> | ';
+  echo '<a href="'.url_home().'">TigShop</a>';
 
   if($g_loggedIn)
     {
@@ -17,7 +18,7 @@ function html_user_bar()
       if($nick == "") $name = $g_userid;
       else $name = "$nick($g_userid)";
 
-      echo 'Logged in as <a href="'.url_userhome().'">'.$name.'</a> | ';
+      echo ' | Logged in as <a href="'.url_userhome().'">'.$name.'</a> | ';
       echo '<a href="'.url_logout().'">Log out</a>';
 
       if(isset($_SESSION['tigshop_new_auth']))
@@ -51,6 +52,7 @@ function html_user_bar()
 <p>Sign in using one of the following options:</p>
 <form action="<?php echo url_login_google(); ?>" method="get">
 <button>Google</button></form>
+<a href="<?php echo url_login_email(); ?>">Login with email</a>
 <?php
     }
   echo '<hr/>';

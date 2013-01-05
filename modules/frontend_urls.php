@@ -14,6 +14,7 @@ function url_logout() { return _base("login/logout.php"); }
 function url_create() { return _base("login/create.php"); }
 function url_login() { return _base("login/"); }
 function url_login_google() { return _base("login/google.php"); }
+function url_login_email() { return _base("login/email.php"); }
 
 function redirect_home() { _redirect(url_home()); }
 function redirect_userhome() { _redirect(url_userhome()); }

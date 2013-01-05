@@ -21,6 +21,7 @@ else
 <p>Sign in using one of the following options:</p>
 <form action="google.php<?php echo $redir; ?>" method="get">
 <button>Google</button></form>
+<a href="email.php">Login with email</a>
 <?php
   }
 html_footer();
