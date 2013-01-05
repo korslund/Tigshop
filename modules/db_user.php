@@ -51,6 +51,17 @@ function db_getUser($userid)
   return $res;
 }
 
+/* List all users. Outputs an array of userids.
+ */
+function db_listUsers()
+{
+  $out = db_run("SELECT userid FROM ".TBL_USERS);
+  $ret = array();
+  while($row = $out->fetch_assoc())
+    array_push($ret, $row['userid']);
+  return $ret;
+}
+
 /* Kill a user account. TODO: Does not kill the actual user.
  */
 function db_killUser($userid)

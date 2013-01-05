@@ -86,7 +86,8 @@ function get_login_info()
 function clear_login_info()
 {
   // Kill the session data
-  session_destroy();
+  unset($_SESSION['tigshop_userid']);
+  unset($_SESSION['tigshop_key']);
 
   // Delete cookies
   setcookie("tigshop_userid", "", time() - 3600, "/");
@@ -105,7 +106,6 @@ function set_login_info($userid, $key, $keep, $expire = 8640000)
 {
   // Clear any existing contents first
   clear_login_info();
-  session_start();
 
   // Set up the session to be 'logged in' from this point on.
   $_SESSION['tigshop_userid'] = $userid;

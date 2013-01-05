@@ -63,4 +63,12 @@ function db_getAuthList($userid)
     array_push($ret, $row['auth_id']);
   return $ret;
 }
+
+/* Kill everything associated with a user
+ */
+function db_killAuthUser($userid)
+{
+  $userid = db_esc($userid);
+  db_run("DELETE FROM ".TBL_AUTH." WHERE userid='$userid'");
+}
 ?>

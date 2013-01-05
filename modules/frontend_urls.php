@@ -12,11 +12,13 @@ function url_home() { return _base(""); }
 function url_userhome() { return _base("home.php"); }
 function url_logout() { return _base("login/logout.php"); }
 function url_create() { return _base("login/create.php"); }
+function url_admin() { return _base("admin/"); }
 function url_login() { return _base("login/"); }
 function url_login_google() { return _base("login/google.php"); }
 function url_login_email() { return _base("login/email.php"); }
 
 function redirect_home() { _redirect(url_home()); }
+function redirect_admin() { _redirect(url_admin()); }
 function redirect_userhome() { _redirect(url_userhome()); }
 function redirect_login($redir)
 { _redirect(url_login() . "?redir=$redir"); }
@@ -27,6 +29,7 @@ function redirect_create() { _redirect(url_create()); }
 function redirect_keyword($key)
 {
   if($key == "userhome") redirect_userhome();
+  elseif($key = "admin") redirect_admin();
   redirect_home();
 }
 
