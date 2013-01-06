@@ -1,6 +1,8 @@
 <?php
 require 'modules/frontend_header.php';
 require 'modules/frontend_autologin.php';
+require 'modules/nonce.php';
+
 html_header("The Indie Game Shop");
 html_user_bar();
 ?>
@@ -11,6 +13,7 @@ currently very hush-hush secretive and sneaky.</p>
 <p>If you would like to sell your games here, request an invite:
 <form action="invite.php" method="post">
 Email: <input name="email" type="text"/> <input value="Send" type="submit"/>
+<?php tg_printFormNonce("email_invite");?>
 </form>
 <?php
 html_footer();

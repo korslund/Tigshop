@@ -4,12 +4,13 @@ require 'modules/frontend_autologin.php';
 require_once 'modules/frontend_urls.php';
 require_once 'modules/auth_code.php';
 require_once 'modules/db_auth.php';
+require 'modules/nonce.php';
 
 require_login("userhome");
 
-// TODO: Implement a nonce system for forms and other sanitation here.
 if(isset($_GET['nick']))
   {
+    tg_requireNonceGET("home_setnick");
     db_setUserInfo($g_userid, $_GET['nick']);
     redirect_userhome();
   }
@@ -23,8 +24,9 @@ $nick = htmlentities($g_user_info['nickname']);
 <form action="home.php" method="get">
 Nickname: <input name="nick" type="text" value="<?php echo $nick;?>"/>
 <input value="Change name" type="submit"/>
-</form>
 <?php
+tg_printFormNonce("home_setnick");
+echo '</form>';
 // Debug display:
 echo '<br>new_auth: '.disp_auth($_SESSION['new_auth']);
 echo '<br>add_auth: '.disp_auth($_SESSION['add_auth']);

@@ -1,6 +1,7 @@
 <?php
 require 'frontend_autologin.php';
 require 'frontend_header.php';
+require_once 'log.php';
 
 require_login("admin");
 
