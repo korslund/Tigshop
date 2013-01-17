@@ -21,16 +21,13 @@ if(isset($_GET['action']))
         db_killAuthUser($val);
         db_removeLogin($val);
       }
-    // This didn't work .. figure out why
-    /*
     elseif($act == "become")
       {
         if($val != $g_userid)
-          doLogin($userid, true);
+          doLogin($val, true);
 
         redirect_userhome();
       }
-    */
   }
 
 html_header("The Indie Game Shop");
@@ -47,7 +44,7 @@ foreach($users as $uid)
   {
     $auths = db_getAuthList($uid);
 
-    echo "<b>User $uid:</b> "/*<a href=\"index.php?action=become&value=$uid&nonce=$nonce\">become</a>*/."<a href=\"index.php?action=delete&value=$uid&nonce=$nonce\">delete</a><br>";
+    echo "<b>User $uid:</b> <a href=\"index.php?action=become&value=$uid&nonce=$nonce\">become</a> <a href=\"index.php?action=delete&value=$uid&nonce=$nonce\">delete</a><br>";
     foreach($auths as $auth)
       echo disp_auth($auth).'<br>';
     echo '<br>';
