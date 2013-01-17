@@ -8,11 +8,27 @@ require 'modules/nonce.php';
 
 require_login("userhome");
 
-if(isset($_GET['nick']))
+if(isset($_POST['nick']))
   {
-    tg_requireNonceGET("home_setnick");
-    db_setUserInfo($g_userid, $_GET['nick']);
+    tg_requireNoncePOST("home_setnick");
+    db_setUserInfo($g_userid, $_POST['nick']);
     redirect_userhome();
+  }
+
+if(isset($_POST['kill_api_key']))
+  {
+    tg_requireNoncePOST("api_key");
+    db_API_killKey($_POST['kill_api_key'], $g_userid);
+  }
+elseif(isset($_POST['name_api_key']))
+  {
+    tg_requireNoncePOST("api_key");
+    db_API_nameKey($_POST['name_api_key'], $_POST['new_name'], $g_userid);
+  }
+elseif(isset($_POST['add_api_key']))
+  {
+    tg_requireNoncePOST("api_key");
+    db_API_addKey($_POST['add_api_key'], $_POST['new_name'], $g_userid);
   }
 
 html_header("The Indie Game Shop");
@@ -21,7 +37,7 @@ html_user_bar();
 $nick = htmlentities($g_user_info['nickname']);
 ?>
 <p>You are home</p>
-<form action="home.php" method="get">
+<form action="home.php" method="post">
 Nickname: <input name="nick" type="text" value="<?php echo $nick;?>"/>
 <input value="Change name" type="submit"/>
 <?php
@@ -41,5 +57,34 @@ foreach($list as $auth)
   {
     echo disp_auth($auth).'<br>';
   }
+
+echo '<p>Tiggit API keys:</p>';
+$list = db_API_getKeys($g_userid);
+$nonce = tg_getFormNonce("api_key");
+foreach($list as $apikey)
+  {
+    $key = htmlentities($apikey['key']);
+    $desc = htmlentities($apikey['desc']);
+?>
+<form action="home.php" method="post">
+<?php echo $key ?>
+<input name="name_api_key" type="hidden" value="<?php echo $key;?>"/>
+<input name="new_name" type="text" value="<?php echo $desc;?>"/>
+<input value="Change name" type="submit"/>
+</form>
+<form action="home.php" method="post">
+<input name="kill_api_key" type="hidden" value="<?php echo $key;?>"/>
+<input value="Delete" type="submit"/>
+</form>
+<?php
+  }
+?>
+<p>Add new key:</p>
+<form action="home.php" method="post">
+Key: <input name="add_api_key" type="text"/>
+Description: <input name="new_name" type="text"/>
+<input value="Delete" type="submit"/>
+</form>
+<?php
 html_footer();
 ?>
