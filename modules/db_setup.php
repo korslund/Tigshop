@@ -15,7 +15,7 @@ class MySQL_Setup
 
   function fail()
   {
-    die("DB ERROR: " . $this->mysql->error);
+    die("DB ERROR: " . $this->mysqli->error);
   }
 
   function run($query)

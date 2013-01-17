@@ -52,7 +52,7 @@ function html_user_bar()
 <p>Sign in using one of the following options:</p>
 <form action="<?php echo url_login_google(); ?>" method="get">
 <button>Google</button></form>
-<a href="<?php echo url_login_email(); ?>">Login with email</a>
+<a href="<?php echo url_login(); ?>">More login options</a>
 <?php
     }
   echo '<hr/>';

@@ -15,7 +15,6 @@ function url_create() { return _base("login/create.php"); }
 function url_admin() { return _base("admin/"); }
 function url_login() { return _base("login/"); }
 function url_login_google() { return _base("login/google.php"); }
-function url_login_email() { return _base("login/email.php"); }
 
 function redirect_home() { _redirect(url_home()); }
 function redirect_admin() { _redirect(url_admin()); }
@@ -37,6 +36,7 @@ function redirect_keyword($key)
  */
 function redirect_set_session($key)
 {
+  if(session_id() == '') session_start();
   $_SESSION['tigshop_redir_key'] = $key;
 }
 
@@ -44,6 +44,7 @@ function redirect_set_session($key)
  */
 function redirect_session()
 {
+  if(session_id() == '') session_start();
   $key = $_SESSION['tigshop_redir_key'];
   unset($_SESSION['tigshop_redir_key']);
   redirect_keyword($key);
