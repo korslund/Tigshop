@@ -5,6 +5,7 @@ require_once 'modules/frontend_urls.php';
 require_once 'modules/auth_code.php';
 require_once 'modules/db_auth.php';
 require 'modules/nonce.php';
+require 'modules/db_apikey.php';
 
 require_login("userhome");
 
@@ -23,7 +24,7 @@ if(isset($_POST['kill_api_key']))
 elseif(isset($_POST['name_api_key']))
   {
     tg_requireNoncePOST("api_key");
-    db_API_nameKey($_POST['name_api_key'], $_POST['new_name'], $g_userid);
+    db_API_nameKey($_POST['name_api_key'], $_POST['new_name']);
   }
 elseif(isset($_POST['add_api_key']))
   {
@@ -59,7 +60,7 @@ foreach($list as $auth)
   }
 
 echo '<p>Tiggit API keys:</p>';
-$list = db_API_getKeys($g_userid);
+$list = db_API_listKeys($g_userid);
 $nonce = tg_getFormNonce("api_key");
 foreach($list as $apikey)
   {
@@ -67,14 +68,16 @@ foreach($list as $apikey)
     $desc = htmlentities($apikey['desc']);
 ?>
 <form action="home.php" method="post">
-<?php echo $key ?>
+<?php echo $key; ?>
 <input name="name_api_key" type="hidden" value="<?php echo $key;?>"/>
 <input name="new_name" type="text" value="<?php echo $desc;?>"/>
 <input value="Change name" type="submit"/>
+<?php echo $nonce; ?>
 </form>
 <form action="home.php" method="post">
 <input name="kill_api_key" type="hidden" value="<?php echo $key;?>"/>
 <input value="Delete" type="submit"/>
+<?php echo $nonce; ?>
 </form>
 <?php
   }
@@ -83,7 +86,8 @@ foreach($list as $apikey)
 <form action="home.php" method="post">
 Key: <input name="add_api_key" type="text"/>
 Description: <input name="new_name" type="text"/>
-<input value="Delete" type="submit"/>
+<input value="Add" type="submit"/>
+<?php echo $nonce; ?>
 </form>
 <?php
 html_footer();

@@ -10,14 +10,16 @@ function db_createAPITable()
   db_run("DROP TABLE IF EXISTS " . TBL_APIKEYS);
 
   db_run("CREATE TABLE " . TBL_APIKEYS .
-         "(code varchar(8) primary key,
+         "(code varchar(12) primary key,
            expire_date datetime,
            userid int unsigned,
            descr text,
            index userid_index(userid))");
 }
 
-/* Insert an API key entry
+/* Insert an API key entry. Newly inserted keys have an expire_date
+   set to NOW(), which means they will always be replaced immediately
+   on first use.
  */
 function db_API_addKey($key, $desc, $userid)
 {
@@ -27,59 +29,75 @@ function db_API_addKey($key, $desc, $userid)
 
   db_run("INSERT INTO ".TBL_APIKEYS.
          "(code,expire_date,userid,descr) ".
-         "VALUES('$key', ADDDATE(NOW(), 7), '$userid', '$desc')");
+         "VALUES('$key', NOW(), '$userid', '$desc')");
 
   return $id;
 }
 
 /* Remove an entry
  */
-function db_API_killKey($key, $userid)
+function db_API_killKey($key)
 {
   $key = db_esc($key);
-  $userid = db_esc($userid);
-  db_run("DELETE FROM ".TBL_APIKEYS." WHERE (code='$key' AND userid='$userid')");
+  db_run("DELETE FROM ".TBL_APIKEYS." WHERE code='$key'");
 }
 
-/* Get a code entry. Will auto-delete it if it is too old. Returns an
-   array with appropriate elements.
-
-   Possible return types:
-
-   - missing
-   - expired
-   - login_id
-   - login_auth
+/* Change the description of an entry
  */
-function db_getCode($code)
+function db_API_nameKey($key, $newname)
 {
-  $code = db_esc($code);
-  $res = db_run_array("SELECT userid,expire_date,code_type,extra_data FROM ".
-                      TBL_APIKEYS." WHERE code='$code'");
+  $key = db_esc($key);
+  $newname = db_esc($newname);
+  db_run("UPDATE ".TBL_APIKEYS." SET descr='$newname' WHERE code='$key'");  
+}
 
-  if(!$res)
-    return array("type" => "missing");
+/* List all the keys belonging to a user
+ */
+function db_API_listKeys($userid)
+{
+  $userid = db_esc($userid);
+  $out = db_run("SELECT code,descr FROM ".TBL_APIKEYS." WHERE userid='$userid'");
+  $ret = array();
+  while($row = $out->fetch_assoc())
+    {
+      array_push($ret, array("key" => $row['code'],
+                             "desc" => $row['descr']));
+    }
+  return $ret;
+}
+
+/* Check an API key. If valid, returns an array with relevant
+   information. If not, returns null.
+
+   If the key has expired, the function may replace it in the database
+   with a newly generated one. The new key is included in the return
+   array.
+ */
+function db_API_checkKey($key)
+{
+  $key = db_esc($key);
+  $res = db_run_array("SELECT userid,expire_date,descr FROM ".
+                      TBL_APIKEYS." WHERE code='$key'");
+
+  if(!$res) return null;
+
+  // Set up the return value
+  $retval = array();
+  $retval['userid'] = $res['userid'];
+  $retval['desc'] = $res['descr'];
 
   // Get the expiry date from MySQLs datetime format
   $expdate = strtotime($res['expire_date']);
 
-  // If the code has expired, then remove it and don't process it
+  // If the code has expired, then renew it
   if(time() > $expdate)
     {
-      db_removeCode($code);
-      return array("type" => "expired");
+      require_once 'passwords.php';
+      $newkey = generateRandStr(12);
+
+      db_run("UPDATE ".TBL_APIKEYS." SET code='$newkey',expire_date=ADDDATE(NOW(),1) WHERE code='$key'");
+      $retval['newkey'] = $newkey;
     }
-
-  $retval = array();
-  $retval['userid'] = $res['userid'];
-  $retval['data'] = $res['extra_data'];
-
-  // Look up type
-  $tp = $res['code_type'];
-  if($tp == '1') $tp = 'login_id';
-  elseif($tp == '2') $tp = 'login_auth';
-  else die("Invalid DB entry");
-  $retval['type'] = $tp;
 
   return $retval;
 }

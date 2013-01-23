@@ -1,5 +1,4 @@
 <?php
-// This because PHP is fundamentally stupid
 require_once 'config.php';
 
 class MySQL_Setup
