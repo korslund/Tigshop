@@ -1,8 +1,8 @@
 <?php
-require 'login_externals.php';
-require 'auto_login.php';
-require 'auth_code.php';
-require 'db_auth.php';
+require_once 'login_openid.php';
+require_once 'auto_login.php';
+require_once 'auth_code.php';
+require_once 'db_auth.php';
 
 function createUserFromAuth($auth)
 {

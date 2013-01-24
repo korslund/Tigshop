@@ -11,6 +11,11 @@
 require_once('passwords.php');
 require_once('log.php');
 
+/*******************************************************
+    NONCE PRODUCTION
+
+*******************************************************/
+
 // Generate and set a session nonce value. Returns the nonce.
 function tg_makeNonce($form)
 {
@@ -35,9 +40,13 @@ function tg_printFormNonce($form)
   echo $str;
 }
 
-// Check if the given nonce is correct. Use a blank nonce to force an
-// error.
-function tg_requireNonce($form, $nonce)
+/*******************************************************
+    NONCE CONFIRMATION
+
+*******************************************************/
+
+// Return true if the given nonce checks out.
+function tg_checkNonce($form, $nonce)
 {
   $name = 'NONCE_' . $form;
 
@@ -49,10 +58,34 @@ function tg_requireNonce($form, $nonce)
 
       // Does it check out OK?
       if(isset($_SESSION[$name]) && $_SESSION[$name] == $nonce)
-        return;
+        return true;
     }
 
-  // Nope, error!
+  return false;
+}
+
+function tg_checkNoncePOST($form)
+{
+  if(isset($_POST['nonce']))
+    return tg_checkNonce($form, $_POST['nonce']);
+  return false;
+}
+
+function tg_checkNonceGET($form)
+{
+  if(isset($_GET['nonce']))
+    return tg_checkNonce($form, $_GET['nonce']);
+  return false;
+}
+
+// Check if the given nonce is correct. Use a blank nonce to force an
+// error.
+function tg_requireNonce($form, $nonce)
+{
+  if(tg_checkNonce($form, $nonce))
+    return;
+
+  // Nonce failed
 
   // Log this - potential CSRF attack
   tg_log("WARNING: Form nonce '$form' failed - from '" . $_SERVER['HTTP_REFERER'] . "'. ".
