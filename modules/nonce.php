@@ -36,8 +36,7 @@ function tg_getFormNonce($form)
 // Echo the field from tg_getFormNonce directly.
 function tg_printFormNonce($form)
 {
-  $str = tg_getFormNonce($form);
-  echo $str;
+  echo tg_getFormNonce($form);
 }
 
 /*******************************************************

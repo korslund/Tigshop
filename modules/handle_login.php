@@ -59,7 +59,7 @@ else
 
             $body = "Hi, here is your login link from Tigshop!\n\nThis link will log you in as $email. Don't have an account? Don't worry! Our legion of magical gnomes will set one up for you automatically.\n\nSign in: $url\n\n(If the link is not clickable, try copy-pasting it into your web browser.)\n\nBest regards,\nThe Tigshop Gnomes";
 
-            mail($email, "Sign In to TigShop", $body, "From: noreply@tiggit.net");
+            mail($email, "Sign In to Tigshop", $body, "From: noreply@tiggit.net");
 
             // TODO: we need something better than this
             die("The magic email fairy has sent you an email!");

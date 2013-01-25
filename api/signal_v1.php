@@ -1,5 +1,13 @@
 <?php
 
+/* Accepted signals:
+
+   act=signout key=authkey:
+
+      Sign the user out by deleting the given auth key from the
+      database.
+ */
+
 $action = @$_GET['act'];
 $key = @$_GET['key'];
 

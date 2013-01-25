@@ -9,6 +9,12 @@ require '../modules/db_user.php';
 
    - key+want: request download link for one item described in
      'want'. The key is used to authenticate the request.
+
+   Future additions (NOT IMPLEMENTED):
+
+   - userid+password: obtain a new key for this user by providing
+     login info directly. This requires a password-enabled account to
+     already exist. Returns user info and the new key.
  */
 
 /* This is the response array. We pile on additional information as
