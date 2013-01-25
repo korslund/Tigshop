@@ -1,39 +1,37 @@
 <?php
-require 'modules/frontend_header.php';
-require 'modules/frontend_autologin.php';
+require 'modules/frontend.php';
 require_once 'modules/frontend_urls.php';
 require_once 'modules/auth_code.php';
 require_once 'modules/db_auth.php';
-require 'modules/nonce.php';
 require 'modules/db_apikey.php';
 
-require_login("userhome");
+if($g_loggedIn)
+  {
+    if(isset($_POST['nick']))
+      {
+        tg_requireNoncePOST("home_setnick");
+        db_setUserInfo($g_userid, $_POST['nick']);
+        redirect_userhome();
+      }
 
-if(isset($_POST['nick']))
-  {
-    tg_requireNoncePOST("home_setnick");
-    db_setUserInfo($g_userid, $_POST['nick']);
-    redirect_userhome();
+    if(isset($_POST['kill_api_key']))
+      {
+        tg_requireNoncePOST("api_key");
+        db_API_killKey($_POST['kill_api_key'], $g_userid);
+      }
+    elseif(isset($_POST['name_api_key']))
+      {
+        tg_requireNoncePOST("api_key");
+        db_API_nameKey($_POST['name_api_key'], $_POST['new_name']);
+      }
+    elseif(isset($_POST['add_api_key']))
+      {
+        tg_requireNoncePOST("api_key");
+        db_API_addKey($_POST['add_api_key'], $_POST['new_name'], $g_userid);
+      }
   }
 
-if(isset($_POST['kill_api_key']))
-  {
-    tg_requireNoncePOST("api_key");
-    db_API_killKey($_POST['kill_api_key'], $g_userid);
-  }
-elseif(isset($_POST['name_api_key']))
-  {
-    tg_requireNoncePOST("api_key");
-    db_API_nameKey($_POST['name_api_key'], $_POST['new_name']);
-  }
-elseif(isset($_POST['add_api_key']))
-  {
-    tg_requireNoncePOST("api_key");
-    db_API_addKey($_POST['add_api_key'], $_POST['new_name'], $g_userid);
-  }
-
-html_header("The Indie Game Shop");
-html_user_bar();
+html_user_header("The Indie Game Shop", true);
 
 $nick = htmlentities($g_user_info['nickname']);
 ?>

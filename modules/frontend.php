@@ -1,6 +1,6 @@
 <?php
-require 'modules/new_handle_login.php';
-require 'modules/frontend_header.php';
+require 'handle_login.php';
+require 'frontend_header.php';
 require 'frontend_urls.php';
 
 function display_login_options()
@@ -56,7 +56,7 @@ function html_user_header($title, $reqLogin=false)
 
       echo ' | Logged in as <a href="'.url_userhome().'">'.$name.'</a> | ';
 
-      require_once 'new_urltools.php';
+      require_once 'urltools.php';
       $logoutURL = get_this_url();
       $logoutURL = url_add_get($logoutURL, "logout", $g_userid);
 

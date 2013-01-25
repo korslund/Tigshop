@@ -15,7 +15,7 @@ if($g_loggedIn)
           redirect_home();
 
         // Otherwise, redirect back to the same page
-        require_once 'new_urltools.php';
+        require_once 'urltools.php';
         $newURL = url_remove_get(get_this_url(), "logout");
         do_redirect($newURL);
       }
@@ -25,48 +25,15 @@ else
     // Check for incomming OpenID login
     if(isset($_GET['openid_mode']))
       {
-        require 'new_handle_openid.php';
+        require 'handle_openid.php';
         exit;
       }
 
     // Check for validation code
     if(isset($_GET['login_code']))
       {
-        require_once 'db_code.php';
-        require_once 'login_common.php';
-
-        $code = $_GET['login_code'];
-        $info = db_getCode($code);
-
-        // Check what kind of code we've got
-        $type = $info['type'];
-        $ret = '';
-        if($type == 'login_auth')
-          {
-            $auth = $info['data'];
-
-            // Log the user in
-            $ret = login_auth($auth, true);
-
-            // Delete the code entry
-            db_removeCode($code);
-
-            $stat = $ret['status'];
-            if($stat == 'ok')
-              {
-                require_once 'frontend_urls.php';
-                require_once 'new_urltools.php';
-                $newURL = url_remove_get(get_this_url(), "login_code");
-                do_redirect($newURL);
-              }
-
-            // TODO: Collate this with login handling in new_handle_openid.php
-            die("login_auth() status: $stat");
-          }
-        else
-          die("This code has expired or is no longer valid. Please request a new code.");
-
-        die("Unhandled code type $type");
+        require 'handle_code.php';
+        exit;
       }
 
     // Check for login form values
@@ -84,7 +51,7 @@ else
             $email = $_POST['email'];
             require_once 'db_code.php';
             require_once 'auth_code.php';
-            require_once 'new_urltools.php';
+            require_once 'urltools.php';
             $code = db_addLoginCode(auth_encode_email($email));
 
             $url = get_this_url();

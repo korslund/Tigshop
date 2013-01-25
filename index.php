@@ -1,10 +1,8 @@
 <?php
-require 'modules/frontend_header.php';
-require 'modules/frontend_autologin.php';
-require 'modules/nonce.php';
+require 'modules/frontend.php';
 
-html_header("The Indie Game Shop");
-html_user_bar();
+html_user_header("The Indie Game Shop");
+
 ?>
 <p>Hello there!</p>
 <p>Tigshop is an experimental new game shop, portal, thingie. We are
