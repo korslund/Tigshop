@@ -19,4 +19,13 @@ function redirect_admin() { do_redirect(url_admin()); }
 function redirect_userhome() { do_redirect(url_userhome()); }
 function redirect_buy($query="") { do_redirect(url_buy($query)); }
 function redirect_addkey($query="") { do_redirect(url_addkey($query)); }
+
+function makeLink($url, $text, $class="")
+{
+  $res = '<a ';
+  if($class)
+    $res .= 'class="'.$class.'" ';
+  $res .= 'href="'.htmlentities($url).'">'.htmlentities($text).'</a>';
+  return $res;
+}
 ?>
