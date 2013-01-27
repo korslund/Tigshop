@@ -21,4 +21,17 @@ function html_footer()
 </html>
 <?php
 }
+
+// Close the html tags and make sure the script exits
+function html_exit()
+{
+  html_footer();
+  exit;
+}
+
+function html_die($msg)
+{
+  echo $msg;
+  html_exit();
+}
 ?>

@@ -68,6 +68,35 @@ function html_user_header($title, $reqLogin=false)
 
       if($g_user_info['nickname'] == "")
         echo '<p>To set your nickname, go to <a href="'.url_userhome().'">account settings</a></p>';
+      echo '<hr/>';
+
+      /* If an 'asuser' GET parameter was specified (usually from API
+         requests), that means the calling client expects us to be
+         logged in as a specific user.
+       */
+      if(isset($_GET['asuser']))
+        {
+          $asUser = htmlentities($_GET['asuser']);
+
+          if($asUser != $g_userid)
+            {
+?>
+<p>You are not signed in as the right user to perform this action!</p>
+<p>Expected to be logged in as user <?php echo $asUser;?>, but you are currently logged in as user <?php echo $g_userid;?>.</p>
+<p>Possible causes:</p>
+<ul>
+<li>You are using multiple accounts on this computer.
+<br><br><b>Solution:</b>
+Log out and log back in as the right user.<br><br></li>
+<li>You have accidentally created several user accounts by logging in with different emails.
+<br><br><b>Solution:</b>
+Send a merge request to user <?php echo $asUser;?>. They will get a link to their primary email account to accept the merge request. NOT IMPLEMENTED YET.</li>
+</ul>
+<?php
+              echo makeLink(url_remove_get(get_this_url(),"asuser"), "Continue viewing the page anyway");
+              html_exit();
+            }
+        }
     }
   else
     {
@@ -75,14 +104,13 @@ function html_user_header($title, $reqLogin=false)
         {
           echo '<p>This page requires that you create or sign in to an account. Please choose a method of identification:</p>';
           display_login_options();
-          html_footer();
-          exit;
+          html_exit();
         }
 
       // TODO: Display hidden per default using JS
       echo '<p>Sign in or create account:</p>';
       display_login_options();
+      echo '<hr/>';
     }
-  echo '<hr/>';
 }
 ?>

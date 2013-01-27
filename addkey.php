@@ -9,42 +9,54 @@ require 'modules/frontend.php';
    STEP 3: purchase games
 */
 
-html_user_header("Authorize Application - The Indie Game Shop", true);
-
 if(!isset($_GET['key']))
   die("Missing parameter");
 
+$key = htmlentities($_GET['key']);
 $want = urlencode(@$_GET['want']);
 if($want)
   $buyURL = url_buy("?want=$want");
+
+html_user_header("Authorize Application - The Indie Game Shop", true);
 
 if(isset($_POST['addkey']))
   {
     tg_requireNoncePOST("addkey");
 
-    $key = $_POST['addkey'];
+    $newkey = $_POST['addkey'];
     $name = @$_POST['name'];
 
-    if($_GET['key'] != $key)
+    if($key != $newkey)
       die("Parameter mismatch");
 
     // Add the key to the database
     require 'modules/db_apikey.php';
-    db_API_addKey($key, $name, $g_userid);
+
+    /* TODO: Error handling:
+
+       - check if the key exists, display error message depending on
+         whether it belongs to the current user or not (and a possible
+         continue button if $want is set)
+
+       - enforce a minimum key length. This is a security measure
+         against key guessing. Ultimately needs to be enforced in
+         db_apikey.php, but we can check and produce "nice" error
+         messages here.
+     */
+
+    db_API_addKey($newkey, $name, $g_userid);
 
     // Redirect to the buy page if there's a shopping list
     if($want)
       do_redirect($buyURL);
 
-    echo "<p>Access has been granted to key ".htmlentities($key)."!</p>";
-    echo "<p>You can manage your access key on the ".makeLink(url_userhome(), "user settings page")."</p>\n";
-    html_footer();
-    exit;
+    echo "<p>Access has been granted to key ".htmlentities($newkey)."!</p>";
+    echo "<p>You can manage your access keys on the ".makeLink(url_userhome(), "user settings page")."</p>\n";
+    html_exit();
   }
 
 require_once 'modules/urltools.php';
 
-$key = htmlentities($_GET['key']);
 $url = get_this_url();
 if($want)
   {
