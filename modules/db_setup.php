@@ -42,9 +42,23 @@ function db_run($query)
   return $g_db->run($query);
 }
 
+function db_run_count($query)
+{
+  return db_run($query)->num_rows;
+}
+
 function db_run_array($query)
 {
   return db_run($query)->fetch_assoc();
+}
+
+function db_run_multi($query)
+{
+  $out = db_run($query);
+  $ret = array();
+  while($row = $out->fetch_assoc())
+    array_push($ret, $row);
+  return $ret;
 }
 
 function db_esc($str)
