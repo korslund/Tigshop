@@ -17,9 +17,10 @@ function display_login_options()
     echo '<input type="hidden" name="login_type" value="'.$type.'"/>';
     echo $nonce;
   }
+
 ?>
 <hr/>
-<p>Sign in with:</p>
+<p>Sign in / create account using:</p>
 <?php echo form_start("google", $nonce, $page);?>
 <input value="Google" type="submit"/></form>
 <hr/>
@@ -27,9 +28,9 @@ function display_login_options()
 Email: <input name="email" type="text"/>
 <input value="Send login link" type="submit"/></form>
 <?php
-/*
+  /*
 <hr/>
-<p>Log in using email/password combo. Requires an existing account with a password set up.</p>
+<p>Email/password combo. Set a password after creating an account.</p>
 <form action="code.php<?php echo $redir;?>" method="get">
 <?php echo $nonce;?>
 Email: <input name="email" type="text"/><br>
@@ -102,7 +103,7 @@ Send a merge request to user <?php echo $asUser;?>. They will get a link to thei
     {
       if($reqLogin)
         {
-          echo '<p>This page requires that you create or sign in to an account. Please choose a method of identification:</p>';
+          echo '<p>This page requires that you are logged in!</p>';
           display_login_options();
           html_exit();
         }

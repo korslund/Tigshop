@@ -4,7 +4,6 @@ require_once '../modules/db_user.php';
 require_once '../modules/db_auth.php';
 require_once '../modules/auth_code.php';
 require_once '../modules/frontend_urls.php';
-require '../modules/db_product.php';
 require '../modules/db_ownership.php';
 
 // Consider more security checks and user confirmations here
@@ -53,13 +52,5 @@ foreach($users as $uid)
     echo '<br>';
   }
 
-
-$games = db_listProducts();
-
-echo 'Games:<br>';
-foreach($games as $gid)
-  {
-    echo $gid,'<br>';
-  }
 html_footer();
 ?>
