@@ -1,6 +1,7 @@
 <?php
 require '../modules/db_apikey.php';
 require '../modules/db_user.php';
+require '../modules/db_ownership.php';
 
 /* Parameters and results:
 
@@ -87,22 +88,22 @@ if(isset($_GET['want']))
     // We are making a download link. Get the item we are fetching.
     $item = $_GET['want'];
 
-    // Test
-    if($item == "abc")
-      api_message("http://go.get/$item");
-    else
-      api_error("You do not have access to this item");
+    // Check for ownership
+    if(db_isOwner($userid, $item))
+      {
+        // TODO: produce a valid link and return it
+        api_message("fake_link_to_".$item);
+      }
 
-    // TODO: Validate item name
-    // TODO: Look up if the user has access to this game
-    // TODO: then produce a valid link and return it
+    api_error("You do not have access to this item");
   }
 else
   {
-    // We are returning user info
+    // We are returning user info, including the list of all their
+    // owned items
+    $list = db_listOwnerProductIDs($userid);
 
-    // TODO: Get real item string here
-    $itemString = "one+two+three";
+    $itemString = implode("+", $list);
     add_userinfo($userid, $nick, $authname, $itemString);
     api_message();
   }

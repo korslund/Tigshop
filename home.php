@@ -4,6 +4,8 @@ require_once 'modules/frontend_urls.php';
 require_once 'modules/auth_code.php';
 require_once 'modules/db_auth.php';
 require 'modules/db_apikey.php';
+require 'modules/db_ownership.php';
+require 'modules/db_product.php';
 
 if($g_loggedIn)
   {
@@ -56,6 +58,24 @@ foreach($list as $auth)
   {
     echo disp_auth($auth).'<br>';
   }
+
+function listGame($gid)
+{
+  echo '<b>',$gid,'</b>:<br>';
+  $prod = db_getProduct($gid);
+  echo htmlentities($prod['title']),' $',$prod['price'],'<br>creator=',$prod['ownerid'],
+    ' paypal=',$prod['paypal'],'<br><br>';
+}
+
+echo '<p>Games you have BOUGHT:</p>';
+$list = db_listOwnerProducts($g_userid);
+foreach($list as $info)
+  listGame($info['prodid']);
+
+echo '<p>Games you have CREATED:</p>';
+$list = db_listProducts($g_userid);
+foreach($list as $gid)
+  listGame($gid);
 
 echo '<p>Tiggit API keys:</p>';
 $list = db_API_listKeys($g_userid);

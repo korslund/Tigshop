@@ -5,6 +5,7 @@ require_once '../modules/db_auth.php';
 require_once '../modules/auth_code.php';
 require_once '../modules/frontend_urls.php';
 require '../modules/db_ownership.php';
+require '../modules/db_product.php';
 
 // Consider more security checks and user confirmations here
 if(isset($_GET['action']))
@@ -28,6 +29,14 @@ if(isset($_GET['action']))
 
         redirect_userhome();
       }
+    elseif($act == "assign")
+      {
+        $user = $_GET['user'];
+        $prod = db_getProduct($val);
+
+        if($prod && db_getUser($user))
+          db_addPurchase($user, $val, $prod['price']);
+      }
   }
 
 html_user_header("The Indie Game Shop", true);
@@ -35,7 +44,6 @@ html_user_header("The Indie Game Shop", true);
 echo '<p>If you see this, you are viewing an admin page!</p>';
 
 $users = db_listUsers();
-
 $nonce = tg_makeNonce("admin_action");
 
 echo 'Users:<br>';
@@ -51,6 +59,15 @@ foreach($users as $uid)
       echo disp_auth($auth)."<br>\n";
     echo '<br>';
   }
-
+?>
+<p>Assign game to user:</p>
+<form action="index.php" method="get">
+Game: <input name="value" type="text"/>
+User: <input name="user" type="text"/>
+<input type="hidden" name="nonce" value="<?php echo $nonce;?>"/>
+<input type="hidden" name="action" value="assign"/>
+<input value="Assign" type="submit"/>
+</form>
+<?php
 html_footer();
 ?>

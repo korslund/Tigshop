@@ -52,4 +52,15 @@ function db_listOwnerProducts($userid)
   return db_run_multi("SELECT * FROM ".TBL_OWNERSHIP.
                       " WHERE ownerid='$userid'");
 }
+
+function db_listOwnerProductIDs($userid)
+{
+  $userid = db_esc($userid);
+  $out = db_run("SELECT prodid FROM ".TBL_OWNERSHIP.
+                " WHERE ownerid='$userid'");
+  $ret = array();
+  while($row = $out->fetch_assoc())
+    array_push($ret, $row['prodid']);
+  return $ret;
+}
 ?>

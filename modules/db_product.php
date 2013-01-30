@@ -62,11 +62,18 @@ function db_getProduct($prodid)
   return $res;
 }
 
-/* List all products. Outputs an array of prodids.
+/* List all products, or all products by a particular user. Outputs an
+   array of prodids.
  */
-function db_listProducts()
+function db_listProducts($byUser = "")
 {
-  $out = db_run("SELECT prodid FROM ".TBL_PRODUCTS);
+  $byUser = db_esc($byUser);
+
+  $q = "SELECT prodid FROM ".TBL_PRODUCTS;
+  if($byUser != "")
+    $q .= " WHERE ownerid='$byUser'";
+
+  $out = db_run($q);
   $ret = array();
   while($row = $out->fetch_assoc())
     array_push($ret, $row['prodid']);
