@@ -91,8 +91,8 @@ if(isset($_GET['want']))
     // Check for ownership
     if(db_isOwner($userid, $item))
       {
-        // TODO: produce a valid link and return it
-        api_message("fake_link_to_".$item);
+        require '../modules/downloads.php';
+        api_message(dl_getItemLink($item));
       }
 
     api_error("You do not have access to this item");
