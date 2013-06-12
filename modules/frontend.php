@@ -1,5 +1,5 @@
 <?php
-require 'handle_login.php';
+require_once 'handle_login.php';
 require 'frontend_header.php';
 require 'frontend_urls.php';
 

@@ -57,12 +57,12 @@ else
             $url = get_this_url();
             $url = url_add_get($url,"login_code","$code");
 
-            $body = "Hi, here is your login link from Tigshop!\n\nThis link will log you in as $email. Don't have an account? Don't worry! Our legion of magical gnomes will set one up for you automatically.\n\nSign in: $url\n\n(If the link is not clickable, try copy-pasting it into your web browser.)\n\nBest regards,\nThe Tigshop Gnomes";
+            $body = "Hi there!\n\nHere is your login link from Tigshop!\n\nThis link will log you in as $email. If you don't have an account, don't worry! Our legion of magical gnomes will set one up for you automatically when you click the link.\n\nSign in: $url\n\n(If the link is not clickable, try copy-pasting it into your web browser.)\n\nBest regards,\nTigShop Gnome Legion";
 
             mail($email, "Sign In to Tigshop", $body, "From: noreply@tiggit.net");
 
             // TODO: we need something better than this
-            die("The magic email fairy has sent you an email!");
+            die("The magic fairy just sent you an email!\n\nOur current server is sometimes a little slow though, so don't be alarmed if it doesn't show up immediately.");
           }
         else
           die("Invalid login parameters!");

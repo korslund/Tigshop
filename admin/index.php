@@ -1,4 +1,5 @@
 <?php
+require '../modules/frontend.php';
 require '../modules/admin_page.php';
 require_once '../modules/db_user.php';
 require_once '../modules/db_auth.php';

@@ -13,7 +13,6 @@ function db_createProductTable()
          "(prodid varchar(32) primary key,
            creation_date datetime,
            ownerid int unsigned,
-           price decimal(5,2),
            title text,
            paypal text,
            provision int,

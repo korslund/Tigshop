@@ -13,7 +13,6 @@ function db_createOwnerTable()
          "(ownerid int unsigned,
            prodid varchar(32),
            purchase_date datetime,
-           price decimal(5,2),
            index owner_index(ownerid),
            index prod_index(prodid))");
 }
