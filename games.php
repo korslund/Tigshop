@@ -11,7 +11,8 @@ foreach($games as $gid)
   {
     echo '<b>',$gid,'</b>:<br>';
     $prod = db_getProduct($gid);
-    echo htmlentities($prod['title']),' $',$prod['price'],'<br>owner=',$prod['ownerid'],
+    // TODO: Price is no longer part of the product
+    echo htmlentities($prod['title']),/*' $',$prod['price'],*/'<br>owner=',$prod['ownerid'],
       ' paypal=',$prod['paypal'],'<br><br>';
   }
 

@@ -25,7 +25,9 @@ foreach($list as $item)
       html_die("<br><b>ERROR:</b> Unknown item $item!");
 
     $title = htmlentities($prodInfo['title']);
-    $price = $prodInfo['price'];
+    // TODO: This has moved
+    //$price = $prodInfo['price'];
+    $price = 999;
     $prov = $prodInfo['provision'];
 
     $cut += $prov*$price;

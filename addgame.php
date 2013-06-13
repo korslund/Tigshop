@@ -14,12 +14,15 @@ if(isset($_POST['prodid']))
     $title = $_POST['title'];
     $paypal = $_POST['paypal'];
 
-    require 'modules/db_product.php';
-    db_addProduct($prodid, $g_userid, $price, $title, $paypal, 15);
+    /* TODO: Price is not used here now. And paypal may be removed.
+     */
 
-    // Always add ourself as an owner of our own products, at price 0.
+    require 'modules/db_product.php';
+    db_addProduct($prodid, $g_userid, $title, $paypal, 15);
+
+    // Always add ourself as an owner of our own products
     require 'modules/db_ownership.php';
-    db_addPurchase($g_userid, $prodid, 0);
+    db_addPurchase($g_userid, $prodid);
 
     echo '<p>Game added!</p>';
   }

@@ -21,33 +21,31 @@ function db_createProductTable()
 
 /* Create a new product entry.
  */
-function db_addProduct($prodid, $owner, $price, $title, $paypal, $provision)
+function db_addProduct($prodid, $owner, $title, $paypal, $provision)
 {
   $prodid = db_esc($prodid);
   $owner = db_esc($owner);
-  $price = db_esc($price);
   $title = db_esc($title);
   $paypal = db_esc($paypal);
   $provision = db_esc($provision);
 
   db_run("INSERT INTO ".TBL_PRODUCTS.
-         "(prodid, creation_date, ownerid, price, title, paypal, provision) ".
-         "VALUES('$prodid', NOW(), '$owner', '$price', '$title', '$paypal', '$provision')");
+         "(prodid, creation_date, ownerid, title, paypal, provision) ".
+         "VALUES('$prodid', NOW(), '$owner', '$title', '$paypal', '$provision')");
 }
 
 /* Update an existing product entry.
  */
-function db_setProductInfo($prodid, $owner, $price, $title, $paypal, $provision)
+function db_setProductInfo($prodid, $owner, $title, $paypal, $provision)
 {
   $prodid = db_esc($prodid);
   $owner = db_esc($owner);
-  $price = db_esc($price);
   $title = db_esc($title);
   $paypal = db_esc($paypal);
   $provision = db_esc($provision);
 
   db_run("UPDATE ".TBL_PRODUCTS.
-         " SET ownerid='$owner', price='$price', title='$title', paypal='$paypal', provision='$provision'".
+         " SET ownerid='$owner', title='$title', paypal='$paypal', provision='$provision'".
          " WHERE prodid='$prodid'");
 }
 

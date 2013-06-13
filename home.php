@@ -63,7 +63,8 @@ function listGame($gid)
 {
   echo '<b>',$gid,'</b>:<br>';
   $prod = db_getProduct($gid);
-  echo htmlentities($prod['title']),' $',$prod['price'],'<br>creator=',$prod['ownerid'],
+  // TODO: Price removed
+  echo htmlentities($prod['title'])/*,' $',$prod['price']*/,'<br>creator=',$prod['ownerid'],
     ' paypal=',$prod['paypal'],'<br><br>';
 }
 

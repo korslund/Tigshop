@@ -17,15 +17,14 @@ function db_createOwnerTable()
            index prod_index(prodid))");
 }
 
-function db_addPurchase($ownerid, $prodid, $price)
+function db_addPurchase($ownerid, $prodid)
 {
   $ownerid = db_esc($ownerid);
   $prodid = db_esc($prodid);
-  $price = db_esc($price);
 
   db_run("INSERT INTO ".TBL_OWNERSHIP.
-         "(ownerid,prodid,purchase_date,price)".
-         " VALUES('$ownerid', '$prodid', NOW(), '$price')");
+         "(ownerid,prodid,purchase_date)".
+         " VALUES('$ownerid', '$prodid', NOW())");
 }
 
 function db_isOwner($userid, $prodid)
