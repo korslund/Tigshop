@@ -22,7 +22,7 @@ if(isset($_POST['prodid']))
 
     // Always add ourself as an owner of our own products
     require 'modules/db_ownership.php';
-    db_addPurchase($g_userid, $prodid);
+    db_addOwner($g_userid, $prodid);
 
     echo '<p>Game added!</p>';
   }

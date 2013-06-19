@@ -8,7 +8,7 @@ function db_createTransactionTable()
   db_run("DROP TABLE IF EXISTS " . TBL_TRANSACTIONS);
 
   db_run("CREATE TABLE " . TBL_TRANSACTIONS .
-         "(tid int unsigned auto_increment,
+         "(tid int unsigned auto_increment primary key,
            sender int unsigned,
            receiver int unsigned,
            amount decimal(5,2),
@@ -32,6 +32,8 @@ function db_addTransaction($sendid, $recid, $amount, $details, $status, $what)
   db_run("INSERT INTO ".TBL_TRANSACTIONS.
          "(sender, receiver, amount, details, status, what, tdate) ".
          "VALUES('$sendid', '$recid', '$amount', '$details', '$status', '$what', NOW())");
+
+  return db_getId();
 }
 
 function db_listTransactionsBySender($sender)

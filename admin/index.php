@@ -36,7 +36,7 @@ if(isset($_GET['action']))
         $prod = db_getProduct($val);
 
         if($prod && db_getUser($user))
-          db_addPurchase($user, $val);
+          db_addOwner($user, $val);
       }
   }
 

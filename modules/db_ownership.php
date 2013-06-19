@@ -17,7 +17,7 @@ function db_createOwnerTable()
            index prod_index(prodid))");
 }
 
-function db_addPurchase($ownerid, $prodid)
+function db_addOwner($ownerid, $prodid)
 {
   $ownerid = db_esc($ownerid);
   $prodid = db_esc($prodid);
