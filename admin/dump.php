@@ -30,5 +30,5 @@ $res['line_desc'] = dump_table(TBL_LINE_DESC);
 $res['line_products'] = dump_table(TBL_LINE_PRODUCTS);
 $res['line_userlevel'] = dump_table(TBL_LINE_USERLEVEL);
 
-print json_encode($res, JSON_PRETTY_PRINT);
+print json_encode($res);
 ?>

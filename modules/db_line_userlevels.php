@@ -11,7 +11,8 @@ function db_createLineUserlevelTable()
          "(lineid int unsigned,
            userid int unsigned,
            level decimal(8,2),
-           index user_index(userid))");
+           index user_index(userid),
+           primary key(lineid,userid))");
 }
 
 function db_setUserLevel($userid, $lineid, $level)
@@ -41,7 +42,7 @@ function db_listUserLevels($byUser = "")
 
   $q = "SELECT * FROM ".TBL_LINE_USERLEVEL;
   if($byUser != "")
-    $q .= " WHERE ownerid='$byUser'";
+    $q .= " WHERE userid='$byUser'";
 
   return db_run_multi($q);
 }

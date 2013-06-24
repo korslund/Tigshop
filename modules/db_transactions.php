@@ -22,11 +22,11 @@ function db_createTransactionTable()
 
 function db_addTransaction($sendid, $recid, $amount, $details, $status, $what)
 {
-  $sendid = int($sendid);
-  $recid = int($recid);
+  $sendid = (int)$sendid;
+  $recid = (int)$recid;
   $amount = db_esc($amount);
   $details = db_esc($details);
-  $status = int($status);
+  $status = (int)$status;
   $what = db_esc($what);
 
   db_run("INSERT INTO ".TBL_TRANSACTIONS.
@@ -38,13 +38,13 @@ function db_addTransaction($sendid, $recid, $amount, $details, $status, $what)
 
 function db_listTransactionsBySender($sender)
 {
-  $sender = int($sender);
+  $sender = (int)$sender;
   return db_run_multi("SELECT * FROM ".TBL_TRANSACTIONS." WHERE sender='$sender'");
 }
 
 function db_listTransactionsByReceiver($receiver)
 {
-  $receiver = int($receiver);
+  $receiver = (int)$receiver;
   return db_run_multi("SELECT * FROM ".TBL_TRANSACTIONS." WHERE receiver='$receiver'");
 }
 ?>

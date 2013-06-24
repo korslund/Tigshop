@@ -14,7 +14,8 @@ function db_createOwnerTable()
            prodid varchar(32),
            purchase_date datetime,
            index owner_index(ownerid),
-           index prod_index(prodid))");
+           index prod_index(prodid),
+           primary key (ownerid,prodid))");
 }
 
 function db_addOwner($ownerid, $prodid)

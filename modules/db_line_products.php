@@ -12,7 +12,7 @@ function db_createLineProductsTable()
            prodid varchar(32),
            price decimal(5,2),
            index line_index(lineid),
-           index both_index(prodid,lineid))");
+           primary key (prodid,lineid))");
 }
 
 function db_addProductToLine($prodid, $lineid, $price)
