@@ -5,16 +5,21 @@ class MySQL_Setup
 {
   private $mysqli;
 
+  var $error_prepend;
+
   // Constructor
   function MySQL_Setup()
   {
     $this->mysqli = new mysqli(DB_SERVER, DB_USER, DB_PASS, DB_NAME)
       or $this->fail();
+    $error_prepend = "";
   }
 
   function fail()
   {
-    die("DB ERROR: " . $this->mysqli->error);
+    $err = $this->error_prepend . "DB ERROR: " . $this->mysqli->error;
+    tg_log($err, true);
+    die("A temporary database error occured. Please contact the site administrator if the error persists.");
   }
 
   function run($query)
@@ -35,6 +40,12 @@ class MySQL_Setup
 };
 
 $g_db = new MySQL_Setup;
+
+function db_set_error_prepend($msg)
+{
+  global $g_db;
+  $g_db->error_prepend = $msg;
+}
 
 function db_run($query)
 {
